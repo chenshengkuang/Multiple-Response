@@ -361,7 +361,13 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
         stepsize_sel=Mb_model[[4]][k-1]
         
         tempdata=as.data.frame(list(tempx=vali_X[,cov_sel]))
-        current_fit[,res_sel]=current_fit[,res_sel]+predict(mod_sel,newdata=tempdata)*mu*stepsize_sel
+        if (base=="linear")
+          step_fit=predict(mod_sel,newdata=tempdata)
+        if (base=="spline")
+          step_fit=predict(mod_sel,xarg=tempdata$tempx)
+        if (base=="stump")
+          step_fit=predict(mod_sel,newdata=tempdata)
+        current_fit[,res_sel]=current_fit[,res_sel]+step_fit*mu*stepsize_sel
         
         if (lossf=="logistic"){
           for (j in 1:q){
@@ -408,7 +414,13 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
           stepsize_sel=Ub_model[[j]][[4]][k-1]
           
           tempdata=as.data.frame(list(tempx=vali_X[,cov_sel]))
-          current_fit[,j]=current_fit[,j]+predict(mod_sel,newdata=tempdata)*mu*stepsize_sel
+          if (base=="linear")
+            step_fit=predict(mod_sel,newdata=tempdata)
+          if (base=="spline")
+            step_fit=predict(mod_sel,xarg=tempdata$tempx)
+          if (base=="stump")
+            step_fit=predict(mod_sel,newdata=tempdata)
+          current_fit[,j]=current_fit[,j]+step_fit*mu*stepsize_sel
           
           if (lossf=="logistic")
             Ub_loss[k]=sum(vali_W[,j]*log(1+exp(-(2*vali_sign_Con[,j]-1)*(2*current_fit[,j]-1))))
@@ -437,7 +449,13 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
           stepsize_sel=Mb_model[[4]][k-1]
           
           tempdata=as.data.frame(list(tempx=Xtest[,cov_sel+1]))
-          current_fit[,res_sel]=current_fit[,res_sel]+predict(mod_sel,newdata=tempdata)*mu*stepsize_sel
+          if (base=="linear")
+            step_fit=predict(mod_sel,newdata=tempdata)
+          if (base=="spline")
+            step_fit=predict(mod_sel,xarg=tempdata$tempx)
+          if (base=="stump")
+            step_fit=predict(mod_sel,newdata=tempdata)
+          current_fit[,res_sel]=current_fit[,res_sel]+step_fit*mu*stepsize_sel
         }
       }
       Mboost_dec=sign(current_fit-0.5)
@@ -457,7 +475,13 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
             stepsize_sel=Ub_model[[j]][[4]][k-1]
             
             tempdata=as.data.frame(list(tempx=Xtest[,cov_sel+1]))
-            current_fit[,j]=current_fit[,j]+predict(mod_sel,newdata=tempdata)*mu*stepsize_sel
+            if (base=="linear")
+              step_fit=predict(mod_sel,newdata=tempdata)
+            if (base=="spline")
+              step_fit=predict(mod_sel,xarg=tempdata$tempx)
+            if (base=="stump")
+              step_fit=predict(mod_sel,newdata=tempdata)
+            current_fit[,j]=current_fit[,j]+step_fit*mu*stepsize_sel
           }
         }
       }

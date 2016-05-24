@@ -24,17 +24,17 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
         for (j in 1:q){
           if (base=="spline"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=gamboost(tempy~tempx,data=tempdata,baselearner="bbs",weights=W[,j],control=boost_control(mstop=1,nu=1),dfbase=4)
-            mod_fit=predict(mod)
+            mod=lm(tempy~tempx,data=tempdata,weights=W[,j])
+            mod_fit=mod$fitted
           }
           if (base=="linear"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=gamboost(tempy~tempx,data=tempdata,baselearner="bols",weights=W[,j],control=boost_control(mstop=1,nu=1))
-            mod_fit=predict(mod)
+            mod=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
+            mod_fit=predict(mod,xarg=tempdata$tempx)
           }
           if (base=="stump"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=gamboost(tempy~tempx,data=tempdata,baselearner="btree",weights=W[,j],control=boost_control(mstop=1,nu=1))
+            mod=rpart(tempy~tempx,data=tempdata,weights=W[,j],control=rpart.control(maxdepth=1))
             mod_fit=predict(mod)
           }
           loss[i,j]=sum(W[,j]*(presid[,j]-mod_fit)^2)/sum(W[,j]*presid[,j]^2)
@@ -45,17 +45,17 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       
       if (base=="spline"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=gamboost(tempy~tempx,data=tempdata,baselearner="bbs",weights=W[,res_sel],control=boost_control(mstop=1,nu=1),dfbase=4)
-        step_fit=predict(mod_sel)
+        mod_sel=lm(tempy~tempx,data=tempdata,weights=W[,res_sel])
+        step_fit=mod_sel$fitted
       }
       if (base=="linear"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=gamboost(tempy~tempx,data=tempdata,baselearner="bols",weights=W[,res_sel],control=boost_control(mstop=1,nu=1))
-        step_fit=predict(mod_sel)
+        mod_sel=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
+        step_fit=predict(mod_sel,xarg=tempdata$tempx)
       }
       if (base=="stump"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=gamboost(tempy~tempx,data=tempdata,baselearner="btree",weights=W[,res_sel],control=boost_control(mstop=1,nu=1))
+        mod_sel=rpart(tempy~tempx,data=tempdata,weights=W[,res_sel],control=rpart.control(maxdepth=1))
         step_fit=predict(mod_sel)
       }
       opt_stepsize=optim(0,line_schlog,current_fit=current_fit[,res_sel],step_fit=step_fit,Y=Y[,res_sel],weight=W[,res_sel],method="BFGS")$par
@@ -83,17 +83,17 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
         for (j in 1:q){
           if (base=="spline"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=gamboost(tempy~tempx,data=tempdata,baselearner="bbs",weights=W[,j],control=boost_control(mstop=1,nu=1),dfbase=4)
-            mod_fit=predict(mod)
+            mod=lm(tempy~tempx,data=tempdata,weights=W[,j])
+            mod_fit=mod$fitted
           }
           if (base=="linear"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=gamboost(tempy~tempx,data=tempdata,baselearner="bols",weights=W[,j],control=boost_control(mstop=1,nu=1))
-            mod_fit=predict(mod)
+            mod=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
+            mod_fit=predict(mod,xarg=tempdata$tempx)
           }
           if (base=="stump"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=gamboost(tempy~tempx,data=tempdata,baselearner="btree",weights=W[,j],control=boost_control(mstop=1,nu=1))
+            mod=rpart(tempy~tempx,data=tempdata,weights=W[,j],control=rpart.control(maxdepth=1))
             mod_fit=predict(mod)
           }
           loss[i,j]=sum(W[,j]*(presid[,j]-mod_fit)^2)/sum(W[,j]*presid[,j]^2)
@@ -104,17 +104,17 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       
       if (base=="spline"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=gamboost(tempy~tempx,data=tempdata,baselearner="bbs",weights=W[,res_sel],control=boost_control(mstop=1,nu=1),dfbase=4)
-        step_fit=predict(mod_sel)
+        mod_sel=lm(tempy~tempx,data=tempdata,weights=W[,res_sel])
+        step_fit=mod_sel$fitted
       }
       if (base=="linear"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=gamboost(tempy~tempx,data=tempdata,baselearner="bols",weights=W[,res_sel],control=boost_control(mstop=1,nu=1))
-        step_fit=predict(mod_sel)
+        mod_sel=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
+        step_fit=predict(mod_sel,xarg=tempdata$tempx)
       }
       if (base=="stump"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=gamboost(tempy~tempx,data=tempdata,baselearner="btree",weights=W[,res_sel],control=boost_control(mstop=1,nu=1))
+        mod_sel=rpart(tempy~tempx,data=tempdata,weights=W[,res_sel],control=rpart.control(maxdepth=1))
         step_fit=predict(mod_sel)
       }
       current_fit[,res_sel]=current_fit[,res_sel]+step_fit*mu
