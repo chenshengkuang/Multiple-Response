@@ -364,7 +364,7 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
         if (base=="linear")
           step_fit=predict(mod_sel,newdata=tempdata)
         if (base=="spline")
-          step_fit=predict(mod_sel,xarg=tempdata$tempx)
+          step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
         if (base=="stump")
           step_fit=predict(mod_sel,newdata=tempdata)
         current_fit[,res_sel]=current_fit[,res_sel]+step_fit*mu*stepsize_sel
@@ -417,7 +417,7 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
           if (base=="linear")
             step_fit=predict(mod_sel,newdata=tempdata)
           if (base=="spline")
-            step_fit=predict(mod_sel,xarg=tempdata$tempx)
+            step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
           if (base=="stump")
             step_fit=predict(mod_sel,newdata=tempdata)
           current_fit[,j]=current_fit[,j]+step_fit*mu*stepsize_sel
@@ -452,7 +452,7 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
           if (base=="linear")
             step_fit=predict(mod_sel,newdata=tempdata)
           if (base=="spline")
-            step_fit=predict(mod_sel,xarg=tempdata$tempx)
+            step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
           if (base=="stump")
             step_fit=predict(mod_sel,newdata=tempdata)
           current_fit[,res_sel]=current_fit[,res_sel]+step_fit*mu*stepsize_sel
@@ -478,7 +478,7 @@ complete_multiple_response_sim=function(resp_type,non_linear,partial_effect,n,p,
             if (base=="linear")
               step_fit=predict(mod_sel,newdata=tempdata)
             if (base=="spline")
-              step_fit=predict(mod_sel,xarg=tempdata$tempx)
+              step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
             if (base=="stump")
               step_fit=predict(mod_sel,newdata=tempdata)
             current_fit[,j]=current_fit[,j]+step_fit*mu*stepsize_sel

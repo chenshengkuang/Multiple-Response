@@ -29,8 +29,8 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
           }
           if (base=="linear"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
-            mod_fit=predict(mod,xarg=tempdata$tempx)
+            mod=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
+            mod_fit=predict(mod,x=tempdata$tempx)[[2]]
           }
           if (base=="stump"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
@@ -50,8 +50,8 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       }
       if (base=="linear"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
-        step_fit=predict(mod_sel,xarg=tempdata$tempx)
+        mod_sel=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
+        step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
       }
       if (base=="stump"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
@@ -88,8 +88,8 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
           }
           if (base=="linear"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
-            mod=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
-            mod_fit=predict(mod,xarg=tempdata$tempx)
+            mod=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
+            mod_fit=predict(mod,x=tempdata$tempx)[[2]]
           }
           if (base=="stump"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
@@ -109,8 +109,8 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       }
       if (base=="linear"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
-        mod_sel=sm.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
-        step_fit=predict(mod_sel,xarg=tempdata$tempx)
+        mod_sel=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
+        step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
       }
       if (base=="stump"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
