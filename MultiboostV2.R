@@ -22,12 +22,12 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       loss=matrix(0,nrow=p,ncol=q)
       for (i in 1:p)
         for (j in 1:q){
-          if (base=="spline"){
+          if (base=="linear"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
             mod=lm(tempy~tempx,data=tempdata,weights=W[,j])
             mod_fit=mod$fitted
           }
-          if (base=="linear"){
+          if (base=="spline"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
             mod=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
             mod_fit=predict(mod,x=tempdata$tempx)[[2]]
@@ -43,12 +43,12 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       cov_sel=which.min(rowSums(loss))
       res_sel=which.min(loss[cov_sel,])
       
-      if (base=="spline"){
+      if (base=="linear"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
         mod_sel=lm(tempy~tempx,data=tempdata,weights=W[,res_sel])
         step_fit=mod_sel$fitted
       }
-      if (base=="linear"){
+      if (base=="spline"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
         mod_sel=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
         step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
@@ -81,12 +81,12 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       loss=matrix(0,nrow=p,ncol=q)
       for (i in 1:p)
         for (j in 1:q){
-          if (base=="spline"){
+          if (base=="linear"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
             mod=lm(tempy~tempx,data=tempdata,weights=W[,j])
             mod_fit=mod$fitted
           }
-          if (base=="linear"){
+          if (base=="spline"){
             tempdata=as.data.frame(list(tempx=X[,i],tempy=presid[,j]))
             mod=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,j],df=4)
             mod_fit=predict(mod,x=tempdata$tempx)[[2]]
@@ -102,12 +102,12 @@ Multiboost<-function(Y,W,X,maxiter,mu,lossf=c("logistic","square"),base=c("splin
       cov_sel=which.min(rowSums(loss))
       res_sel=which.min(loss[cov_sel,])
       
-      if (base=="spline"){
+      if (base=="linear"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
         mod_sel=lm(tempy~tempx,data=tempdata,weights=W[,res_sel])
         step_fit=mod_sel$fitted
       }
-      if (base=="linear"){
+      if (base=="spline"){
         tempdata=as.data.frame(list(tempx=X[,cov_sel],tempy=presid[,res_sel]))
         mod_sel=smooth.spline(y=tempdata$tempy,x=tempdata$tempx,w=W[,res_sel],df=4)
         step_fit=predict(mod_sel,x=tempdata$tempx)[[2]]
